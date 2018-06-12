@@ -37,16 +37,17 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         
-        //trial 1
-        // $this->validate($request, [
-        //     'std_no'=>'required',
-        //     'fullname'=>'required',
-        //     'DOBirth'=>'required',
-        //     'address'=>'required',
-        //     ]);
+        //validates the form, all fields are required
+        $this->validate($request, [
+            'std_no'=>'required',
+            'fullname'=>'required',
+            'DOBirth'=>'required',
+            'address'=>'required',
+            ]);
        
         
-        //trial 2 $student= new \App\Student;
+        //trial 2 
+        $student= new \App\Student;
         $student->std_no=$request->get('std_no');
         $student->fullname=$request->get('fullname');
         $student->DOBirth=$request->get('DOBirth');
@@ -54,7 +55,7 @@ class StudentController extends Controller
 
         $student->save();
 
-        return redirect('students')->with('success','A new student has been added!');
+        return redirect('student')->with('success','A new student has been added!');
         // $std_no = $request->input('std_no');
         // $fullname = $request->input('fullname');
         // $DOBirth = $request->input('DOBirth');

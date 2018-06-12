@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\DB;
+use App\Fees;
+
 
 class FeesController extends Controller
 {
@@ -24,7 +28,7 @@ class FeesController extends Controller
     public function create()
     {
 
-        return view('91375/fees'));
+        return view('91375/fees');
     }
 
     /**
@@ -35,14 +39,19 @@ class FeesController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     'fullname'=>'required',
-        //     'DOPay'=>'required',
-        //     'amount'=>'required',
-        //     ]);
+        //validates the form, all fields are required
+        
+        $this->validate($request, [
+            'std_no'=>'required',
+            'fullname'=>'required',
+            'DOPay'=>'required',
+            'amount'=>'required',
+            ]);
 
+        
         $fee= new \App\Fees;
         
+        $fee->std_no=$request->get('std_no');
         $fee->fullname=$request->get('fullname');
         $fee->DOPay=$request->get('DOPay');
         $fee->amount=$request->get('amount');
@@ -51,6 +60,18 @@ class FeesController extends Controller
 
         return redirect('fees')->with('success','Fee payment has been recorded!');
         echo 'Fee payment has been recorded!';
+    }
+    
+    //search for a single record
+    
+    public function searchRecord()
+    {
+        $q = Input::get ('search_id');
+        $user = Fees:: where('std_no','LIKE','%'.$q.'%')->get();
+        if(count($user)>0)
+            return view('91375.search')->withDetails($user)->withQuery($q);
+            else return view('91375.home')->withMessage('No record found. Please try again');
+
     }
 
     /**
@@ -61,7 +82,12 @@ class FeesController extends Controller
      */
     public function show($id)
     {
-        //
+        //  $fees= Fee::all();
+        // foreach($fees as $fee){
+        //  return view('91375.totalfees')->withDetails($fee);
+        //     else return view('91375.home')->withMessage('No records found. Please try again');
+   
+        // }
     }
 
     /**
@@ -72,7 +98,7 @@ class FeesController extends Controller
      */
     public function edit($id)
     {
-        //
+       
     }
 
     /**
@@ -97,4 +123,5 @@ class FeesController extends Controller
     {
         //
     }
+    
 }

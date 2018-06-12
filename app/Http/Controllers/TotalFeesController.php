@@ -24,8 +24,7 @@ class TotalFeesController extends Controller
      */
     public function create()
     {
-        $total = fees::sum('amount');
-        return view('91375/totalfees', compact('total'));//
+        
     }
 
     /**
